@@ -13,7 +13,9 @@ app.use(express.json({ extended: true}));
 const PORT = process.env.PORT || 4000;
 
 // Importamos rutas
-app.use('/api/usuarios', require('./routes/usuarios.js'));//usamos API por si decidimos crear el proyecto web sin usar REST API. 
+app.use('/api/usuarios', require('./routes/usuarios.js'));
+app.use('/api/auth', require('./routes/auth.js'));
+//usamos API por si decidimos crear el proyecto web sin usar REST API. 
 //arrancamos la app
 app.listen(PORT,()=>{
     console.log(`El servidor está funcionando en el puerto ${PORT}`);
