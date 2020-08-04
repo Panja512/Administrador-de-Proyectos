@@ -64,14 +64,14 @@ exports.modificarProyecto = async(req,res) => {
         }
         //modificamos el proyecto (le tenemos que pasar el id y definir el nuevo valor)
         proyecto = await Proyecto.findByIdAndUpdate({_id: req.params.id}, { $set: nuevoProyecto},
-            { new: true});
+        { new: true});
         res.json({mensaje: 'El proyecto ha sido modificado correctamente'});
     } catch (error) {
         console.log(error);
         res.status(500).send('Hubo un error al modificar el proyecto');
     }
 };
-//eliminar proyectos por ID
+//eliminar proyectos por ID (hay que eliminar tareas asociadas)
 exports.eliminarProyecto = async(req,res) => {
     try {
          //revisamos el ID del proyecto

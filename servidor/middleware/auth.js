@@ -13,6 +13,6 @@ module.exports = function(req, res, next){
         req.usuario = cifrado.usuario;
         next();
     } catch (error) {
-        res.status(401).json({mensaje:'Token no válido'});
+        res.status(401).json({mensaje:'Su sesión ya ha expirado, por favor, inicie sesión otra vez'});
     }
 }
