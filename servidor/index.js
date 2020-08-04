@@ -15,6 +15,8 @@ const PORT = process.env.PORT || 4000;
 // Importamos rutas
 app.use('/api/usuarios', require('./routes/usuarios.js'));
 app.use('/api/auth', require('./routes/auth.js'));
+app.use('/api/proyectos', require('./routes/proyectos.js'));
+
 //usamos API por si decidimos crear el proyecto web sin usar REST API. 
 //arrancamos la app
 app.listen(PORT,()=>{
