@@ -1,4 +1,6 @@
 const Proyecto = require('../modelos/Proyecto.js');
+const Tarea = require('../modelos/Tarea.js');
+
 const { restart } = require('nodemon');
 const { validationResult } = require('express-validator');
 exports.crearProyecto = async(req,res) => {
@@ -84,8 +86,10 @@ exports.eliminarProyecto = async(req,res) => {
          if(proyecto.creador.toString() !== req.usuario.id){
              return res.status(401).json({mensaje:'Usuario no autorizado'});
          }
-         //eliminamos el proyecto
+         //eliminamos el proyecto y sus tareas asociadas
          await Proyecto.findOneAndRemove({_id: req.params.id});
+          //obtenemos las tareas del proyecto asociado y las removemos
+         await Tarea.remove({proyecto: req.params.id});
          res.json({mensaje: 'El proyecto ha sido eliminado correctamente'});
     } catch (error) {
         console.log(error);
