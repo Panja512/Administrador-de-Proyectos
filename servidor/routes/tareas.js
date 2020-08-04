@@ -25,4 +25,9 @@ router.put('/:id',
     auth,
     tareaControlador.modificarTarea
 );
+//eliminar una tarea
+router.delete('/:id',
+    auth,
+    tareaControlador.eliminarTarea
+);
 module.exports = router;

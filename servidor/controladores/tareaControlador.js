@@ -78,9 +78,9 @@ exports.modificarTarea = async (req,res) => {
         nuevaTarea.estado = estado;
     }
     try {
-        //revisamos el ID del proyecto
+        //revisamos el ID de la tarea
         let tarea = await Tarea.findById(req.params.id);
-        //revisamos si el proyecto existe o no
+        //revisamos si la tarea existe o no
         if(!tarea){
             return res.status(404).json({mensaje:'Tarea no encontrada'});
         }
@@ -98,5 +98,30 @@ exports.modificarTarea = async (req,res) => {
     catch (error) {
         console.log(error);
         res.status(500).send('Hubo un error al modificar la tarea');
+    }
+};
+exports.eliminarTarea = async(req,res) => {
+    //array destructuring para sacar información de la tarea
+    const { proyecto } = req.body;
+    try {
+        //revisamos el ID de la tarea
+        let tarea = await Tarea.findById(req.params.id);
+        //revisamos si la tarea existe o no
+        if(!tarea){
+            return res.status(404).json({mensaje:'Tarea no encontrada'});
+        }
+        //guardamos en una variable el proyecto perteneciente a la tarea
+        const existeProyecto = await Proyecto.findById(proyecto);
+        //el proyecto existe, entonces debemos verificar que pertenezca a un usuario
+        if(existeProyecto.creador.toString() !== req.usuario.id){
+            return res.status(401).json({mensaje:'Usuario no autorizado'});
+        }
+        //eliminamos la tarea (le tenemos que pasar el id como parámetro)
+        await Tarea.findOneAndRemove({_id: req.params.id});
+        res.json({mensaje: 'La tarea ha sido eliminada correctamente'});
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send('Hubo un error al eliminar la tarea');
     }
 };
