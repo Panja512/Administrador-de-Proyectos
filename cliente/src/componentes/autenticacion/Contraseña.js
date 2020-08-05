@@ -2,7 +2,6 @@ import React,{useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Box from '@material-ui/core/Box';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -34,7 +33,7 @@ const onChange = (e)=>{
     ...usuario,
     [e.target.name] : e.target.value
   })
-}
+};
 
   return (
     <ValidatorForm>

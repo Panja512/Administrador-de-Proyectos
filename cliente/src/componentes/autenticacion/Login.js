@@ -18,6 +18,7 @@ import Card from '@material-ui/core/Card';
 import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 const Login = () => {
 
 
@@ -37,6 +38,7 @@ const onChange = (e)=>{
   const estilos = EstilosComun();
   const copyright = Copyright();
   return (
+    <ValidatorForm>
       <Container component="main" maxWidth="sm">
         <Card className={estilos.cardInicio} variant="outlined">
       <CssBaseline />
@@ -48,7 +50,7 @@ const onChange = (e)=>{
           Inicia sesión
         </Typography>
         <form className={estilos.formulario} noValidate>
-          <TextField
+          <TextValidator
             margin="normal"
             variant="outlined"
             required
@@ -57,6 +59,8 @@ const onChange = (e)=>{
             label="Nombre de Usuario o correo electrónico"
             name="usuario"
             value={usuario}
+            validators={['required']}
+            errorMessages={['Este campo es requerido']}
             autoComplete="usuario"
             autoFocus
             onChange={onChange}
@@ -68,7 +72,7 @@ const onChange = (e)=>{
               ),
             }}
           />
-          <TextField
+          <TextValidator
             type="password"
             variant="outlined"
             margin="normal"
@@ -78,6 +82,8 @@ const onChange = (e)=>{
             label="Contraseña"
             name="contraseña"
             value={contraseña}
+            validators={['required']}
+            errorMessages={['Este campo es requerido']}
             onChange={onChange}
             InputProps={{
               startAdornment: (
@@ -121,6 +127,7 @@ const onChange = (e)=>{
       </Box>
       </Card>
     </Container>
+    </ValidatorForm>
   );
 }
 export default Login;
