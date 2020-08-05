@@ -2,7 +2,6 @@ import React,{useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -18,6 +17,8 @@ import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
 const CuentaNueva = () => {
 
   const estilos = EstilosComun();
@@ -32,9 +33,16 @@ const [usuario, guardarUsuario] = useState({
   contraseña: '',
   rcontraseña: '',
 });
+
+ValidatorForm.addValidationRule('contraseñasCoinciden', (value) => {
+  if (value !== usuario.contraseña) {
+      return false;
+  }
+  return true;
+});
 //funcion para borrar el contenido del formulario
 const borrarFormulario = ()=>{
-  guardarUsuario()
+  guardarUsuario();
 }
 //extraemos los valores de los inputs
 const {nombre, apellido, nombreUsuario, contraseña, rcontraseña, email} = usuario;
@@ -46,6 +54,7 @@ const onChange = (e)=>{
 }
 
   return (
+      <ValidatorForm>
       <Container component="main" maxWidth="sm">
         <Card className={estilos.cardInicio} variant="outlined">
       <CssBaseline />
@@ -61,7 +70,7 @@ const onChange = (e)=>{
           Datos del usuario        </Typography>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
               autoFocus
               variant="outlined"
               fullWidth
@@ -72,11 +81,13 @@ const onChange = (e)=>{
               name="nombre"
               autoComplete="nombre"
               value={nombre}
+              validators={['required', 'isString']}
+              errorMessages={['Este campo es requerido', 'Solo letras']}
               onChange={onChange}
             />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
               fullWidth
               variant="outlined"
               margin="normal"
@@ -85,12 +96,14 @@ const onChange = (e)=>{
               label="Apellido"
               name="apellido"
               value={apellido}
+              validators={['required', 'isString']}
+              errorMessages={['Este campo es requerido', 'Solo letras']}
               autoComplete="apellido"
               onChange={onChange}
             />
             </Grid>
           </Grid>
-          <TextField
+          <TextValidator
             fullWidth
             variant="outlined"
             margin="normal"
@@ -100,6 +113,8 @@ const onChange = (e)=>{
             name="nombreUsuario"
             value={nombreUsuario}
             autoComplete="nombreUsuario"
+            validators={['required']}
+            errorMessages={['Este campo es requerido']}
             onChange={onChange}
             InputProps={{
               startAdornment:(
@@ -110,7 +125,7 @@ const onChange = (e)=>{
             }
             }
           />
-            <TextField
+            <TextValidator
             fullWidth
             variant="outlined"
             margin="normal"
@@ -118,6 +133,8 @@ const onChange = (e)=>{
             id="email"
             label="Correo electrónico"
             name="email"
+            validators={['required', 'isEmail']}
+            errorMessages={['Este campo es requerido', 'Ingrese un correo válido']}
             value={email}
             autoComplete="email"
             onChange={onChange}
@@ -130,7 +147,7 @@ const onChange = (e)=>{
             }
             }
           />   
-          <TextField
+          <TextValidator
             variant="outlined"
             type="password"
             margin="normal"
@@ -139,6 +156,8 @@ const onChange = (e)=>{
             id="contraseña"
             label="Contraseña"
             name="contraseña"
+            validators={['required', 'minStringLength:6']}
+            errorMessages={['Este campo es requerido', 'La contraseña debe contener 6 carácteres como mínimo']}
             value={contraseña}
             onChange={onChange}
             InputProps={{
@@ -150,7 +169,7 @@ const onChange = (e)=>{
             }
             }
           />
-          <TextField
+          <TextValidator
             variant="outlined"
             type="password"
             margin="normal"
@@ -160,6 +179,8 @@ const onChange = (e)=>{
             label="Repita contraseña"
             name="rcontraseña"
             value={rcontraseña}
+            validators={['required','contraseñasCoinciden']}
+            errorMessages={['Este campo es requerido','Las contraseñas no coinciden']}
             onChange={onChange}
             InputProps={{
               startAdornment:(
@@ -208,7 +229,7 @@ const onChange = (e)=>{
       </Box>
       </Card>
     </Container>
-    
+    </ValidatorForm>
   );
 }
 export default CuentaNueva;

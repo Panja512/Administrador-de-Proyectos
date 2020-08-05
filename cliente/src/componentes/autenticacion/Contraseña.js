@@ -16,6 +16,8 @@ import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
 const Contraseña = () => {
 
   const estilos = EstilosComun();
@@ -35,6 +37,7 @@ const onChange = (e)=>{
 }
 
   return (
+    <ValidatorForm>
       <Container component="main" maxWidth="sm">
         <Card className={estilos.cardInicio} variant="outlined">
       <CssBaseline />
@@ -46,7 +49,7 @@ const onChange = (e)=>{
           Ingrese su correo para poder recuperar su contraseña
         </Typography>
         <form className={estilos.formulario} noValidate>
-        <TextField
+        <TextValidator
             variant="outlined"
             autoFocus
             fullWidth
@@ -56,6 +59,8 @@ const onChange = (e)=>{
             label="Correo electrónico"
             name="email"
             value={email}
+            validators={['required','isEmail']}
+            errorMessages={['Este campo es requerido','Ingrese un correo electrónico válido']}
             autoComplete="email"
             onChange={onChange}
             InputProps={{
@@ -106,7 +111,7 @@ const onChange = (e)=>{
       </Box>
       </Card>
     </Container>
-    
+    </ValidatorForm>
   );
 }
 export default Contraseña;

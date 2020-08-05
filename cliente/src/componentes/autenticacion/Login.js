@@ -38,7 +38,6 @@ const onChange = (e)=>{
   const copyright = Copyright();
   return (
       <Container component="main" maxWidth="sm">
-
         <Card className={estilos.cardInicio} variant="outlined">
       <CssBaseline />
       <div className={estilos.contenidoFormulario}>
@@ -122,7 +121,6 @@ const onChange = (e)=>{
       </Box>
       </Card>
     </Container>
-    
   );
 }
 export default Login;
