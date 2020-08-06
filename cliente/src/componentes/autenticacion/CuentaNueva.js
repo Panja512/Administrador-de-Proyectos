@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useContext, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,12 +18,17 @@ import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import AuthContext from './../../context/auth/authContext';
+import swal from 'sweetalert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
-const CuentaNueva = () => {
+const CuentaNueva = (props) => {
 
   const estilos = EstilosComun();
   const copyright = Copyright();
 
+const authContext = useContext(AuthContext);
+const { registrarUsuario, mensaje, autenticado } = authContext;
 /* state para iniciar sesión */
 const [usuario, guardarUsuario] = useState({
   nombre: '',
@@ -33,6 +38,12 @@ const [usuario, guardarUsuario] = useState({
   contraseña: '',
   rcontraseña: '',
 });
+useEffect(()=>{
+  if(autenticado){
+    swal("Operación completada","Usuario registrado correctamente","success");
+    props.history.push('/proyectos');
+  }
+},[autenticado,mensaje,props.history]);
 
 ValidatorForm.addValidationRule('contraseñasCoinciden', (value) => {
   if (value !== usuario.contraseña) {
@@ -41,9 +52,16 @@ ValidatorForm.addValidationRule('contraseñasCoinciden', (value) => {
   return true;
 });
 //funcion para borrar el contenido del formulario
-const borrarFormulario = ()=>{
-  guardarUsuario();
-}
+const resetearFormUsuario = ()=>{
+  guardarUsuario({
+    nombre: '',
+    apellido: '',
+    nombreUsuario: '',
+    contraseña: '',
+    rcontraseña: '',
+    email: ''
+  });
+};
 //extraemos los valores de los inputs
 const {nombre, apellido, nombreUsuario, contraseña, rcontraseña, email} = usuario;
 const onChange = (e)=>{
@@ -51,10 +69,21 @@ const onChange = (e)=>{
     ...usuario,
     [e.target.name] : e.target.value
   })
-}
+};
+const onSubmitUsuario = (e) => {
+  e.preventDefault();
+    registrarUsuario({
+      nombre,
+      apellido,
+      nombreUsuario,
+      contraseña,
+      email
+    });
+
+};
 
   return (
-      <ValidatorForm>
+      <ValidatorForm onSubmit={onSubmitUsuario}>
       <Container component="main" maxWidth="sm">
         <Card className={estilos.cardInicio} variant="outlined">
       <CssBaseline />
@@ -65,7 +94,7 @@ const onChange = (e)=>{
         <Typography component="h1" variant="h4">
           Crear una nueva cuenta
         </Typography>
-        <form className={estilos.formulario} noValidate>
+        <form className={estilos.formulario}>
         <Typography component="h1" align="center" variant="h5">
           Datos del usuario        </Typography>
           <Grid container spacing={1}>
@@ -75,7 +104,6 @@ const onChange = (e)=>{
               variant="outlined"
               fullWidth
               margin="normal"
-              required
               id="nombre"
               label="Nombre"
               name="nombre"
@@ -91,7 +119,6 @@ const onChange = (e)=>{
               fullWidth
               variant="outlined"
               margin="normal"
-              required
               id="apellido"
               label="Apellido"
               name="apellido"
@@ -107,7 +134,6 @@ const onChange = (e)=>{
             fullWidth
             variant="outlined"
             margin="normal"
-            required
             id="nombreUsuario"
             label="Nombre de usuario"
             name="nombreUsuario"
@@ -129,7 +155,6 @@ const onChange = (e)=>{
             fullWidth
             variant="outlined"
             margin="normal"
-            required
             id="email"
             label="Correo electrónico"
             name="email"
@@ -151,7 +176,6 @@ const onChange = (e)=>{
             variant="outlined"
             type="password"
             margin="normal"
-            required
             fullWidth
             id="contraseña"
             label="Contraseña"
@@ -173,7 +197,6 @@ const onChange = (e)=>{
             variant="outlined"
             type="password"
             margin="normal"
-            required
             fullWidth
             id="rcontraseña"
             label="Repita contraseña"
@@ -191,7 +214,12 @@ const onChange = (e)=>{
             }
             }
           />
-  <div className={estilos.root}>
+          {mensaje ? 
+              <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              Este usuario ya se encuentra registrado — <strong>Por favor, verifique sus datos</strong>
+            </Alert>: null}
+          <div className={estilos.root}>
           <Grid container spacing={3}>
               <Grid item xs={6}>
               <Button
@@ -212,14 +240,14 @@ const onChange = (e)=>{
             type="submit"
             variant="contained"
             className={estilos.boton}
-            onClick={borrarFormulario}
+            onClick={resetearFormUsuario}
           >
               <ArrowBackIosIcon/>
             Volver
             </Button>
               </Link>
               </Grid>
-
+  
           </Grid>
           </div>
         </form>
