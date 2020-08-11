@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 
+//middleware utilizado para autenticar un usuario al registrar una nueva cuenta
 exports.autenticarUsuario = async(req,res) => {
       //revisamos si hay errores
       const errores = validationResult(req);
@@ -12,9 +13,9 @@ exports.autenticarUsuario = async(req,res) => {
       const { email, contraseña } = req.body;
       try {
         //revisamos si el usuario está registrado
-        let usuario = await Usuario.findOne({email});
-        if(!usuario){
-            return res.status(400).json({mensaje:'El usuario no existe'});
+        let existeEmail = await Usuario.findOne({email});
+        if(!existeEmail){
+            return res.status(400).json({mensaje:'El correo electrónico es incorrecto'});
         }
         const contraseñaCorrecta = await bcryptjs.compare(contraseña, usuario.contraseña);
         if (!contraseñaCorrecta) {
@@ -41,4 +42,16 @@ exports.autenticarUsuario = async(req,res) => {
       } catch (error) {
           console.log(error);
       }
-}
+};
+//middleware utilizado para autenticar un usuario al iniciar sesión
+exports.usuarioAutenticado = async(req,res) => {
+    try {
+        /* consultamos si existe un usuario en la BD por su id que está en el cuerpo de la request,
+        no vamos a traer la contraseña del usuario para garantizar seguridad, con mongoose se hace con
+        .select */
+        const usuario = await Usuario.findById(req.usuario.id).select('-contraseña');
+        res.json({usuario});
+    } catch (error) {
+        console.log(error);
+    }
+};

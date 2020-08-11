@@ -1,14 +1,16 @@
 import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
-import { REGISTRO_ERRONEO, REGISTRO_EXITOSO } from '../../types';
+import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, LOGIN_EXITOSO, OBTENER_INFO_USUARIO } from '../../types';
 import clienteAxios from './../../config/axios';
+import tokenAuth from './../../config/token';
 const AuthState = (props) => {
     const initialState = {
         token: localStorage.getItem('token'),
         autenticado: false,
         usuario_info: null,
-        mensaje: null
+        mensaje_registro: null,
+        mensaje_login: null
     };
     const [ state, dispatch ] = useReducer(authReducer, initialState);
 
@@ -25,10 +27,48 @@ datos del registro del usuario
             type:REGISTRO_EXITOSO,
             payload: respuesta.data
         });
+        //una vez registrado y autenticado el usuario, lo obtenemos
+        usuarioAutenticado();
         } catch (error) {
         console.log(error.response.data.mensaje);
             dispatch({
                 type: REGISTRO_ERRONEO,
+                payload: error.response.data.mensaje
+            });
+        }
+    };
+    //retorna el usuario autenticado, nos servirá tanto al momento del registro como del logueo
+    const usuarioAutenticado = async ()=>{
+        //leemos en el local storage si hay un token
+        const token = localStorage.getItem('token');
+        if (token) {
+            // funcion para enviar el token por headers
+            tokenAuth(token);
+        }
+        try {
+            //obtenemos la respuesta de la peticion a la base de datos, para obtener info del usuario
+            const respuesta = await clienteAxios.get('/api/auth');
+            console.log(respuesta);
+            dispatch({
+                type: OBTENER_INFO_USUARIO,
+                payload: respuesta.data.usuario
+            });
+        } catch (error) {
+            console.log(error.response);
+            dispatch({
+                type: LOGIN_ERRONEO
+            });
+        }
+    };
+    //cuando el usuario inicia sesión
+    const iniciarSesion = async(datos) =>{
+        try {
+            const respuesta = await clienteAxios.post('/api/auth', datos);
+            console.log(respuesta);
+        } catch (error) {
+            console.log(error.response.data.mensaje);
+            dispatch({
+                type: LOGIN_ERRONEO,
                 payload: error.response.data.mensaje
             });
         }
@@ -39,8 +79,10 @@ datos del registro del usuario
             token: state.token,
             autenticado: state.autenticado,
             usuario_info: state.usuario_info,
-            mensaje: state.mensaje,
-            registrarUsuario
+            mensaje_login: state.mensaje_login,
+            mensaje_registro: state.mensaje_registro,
+            registrarUsuario,
+            iniciarSesion
         }}
         >{props.children}
         </AuthContext.Provider>

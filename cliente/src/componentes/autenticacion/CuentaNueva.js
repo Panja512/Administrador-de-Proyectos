@@ -28,7 +28,7 @@ const CuentaNueva = (props) => {
   const copyright = Copyright();
 
 const authContext = useContext(AuthContext);
-const { registrarUsuario, mensaje, autenticado } = authContext;
+const { registrarUsuario, mensaje_registro, autenticado } = authContext;
 /* state para iniciar sesión */
 const [usuario, guardarUsuario] = useState({
   nombre: '',
@@ -38,12 +38,13 @@ const [usuario, guardarUsuario] = useState({
   contraseña: '',
   rcontraseña: '',
 });
+
 useEffect(()=>{
   if(autenticado){
-    swal("Operación completada","Usuario registrado correctamente","success");
-    props.history.push('/proyectos');
+    swal("Operación completada","Usuario registrado correctamente, ahora puede iniciar sesión.","success");
+    props.history.push('/login');
   }
-},[autenticado,mensaje,props.history]);
+},[autenticado,props.history]);
 
 ValidatorForm.addValidationRule('contraseñasCoinciden', (value) => {
   if (value !== usuario.contraseña) {
@@ -64,6 +65,7 @@ const resetearFormUsuario = ()=>{
 };
 //extraemos los valores de los inputs
 const {nombre, apellido, nombreUsuario, contraseña, rcontraseña, email} = usuario;
+
 const onChange = (e)=>{
   guardarUsuario({
     ...usuario,
@@ -79,7 +81,6 @@ const onSubmitUsuario = (e) => {
       contraseña,
       email
     });
-
 };
 
   return (
@@ -214,11 +215,11 @@ const onSubmitUsuario = (e) => {
             }
             }
           />
-          {mensaje ? 
-              <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
-              Este usuario ya se encuentra registrado — <strong>Por favor, verifique sus datos</strong>
-            </Alert>: null}
+          {mensaje_registro? 
+              <Alert severity="info">
+              <AlertTitle>Aviso</AlertTitle>
+              {mensaje_registro} — <strong>Por favor, verifique sus datos</strong>
+            </Alert>: !autenticado ? null : null}
           <div className={estilos.root}>
           <Grid container spacing={3}>
               <Grid item xs={6}>

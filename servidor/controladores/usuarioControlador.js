@@ -15,11 +15,16 @@ exports.crearUsuario = async(req,res)=>{
     }
     //todo esto ingresa el usuario en la vista
     //VALIDACIONES
-    const { email, contraseña } = req.body;
-    try {
-        let usuario = await Usuario.findOne({email});
-        if (usuario){
-            return res.status(400).json({mensaje:'El usuario ya se encuentra registrado. Por favor, revise su nombre de usuario o su correo electrónico'});
+    const { email, contraseña, nombreUsuario } = req.body;
+    try{
+        //revisamos si el usuario está registrado
+        let existeEmail = await Usuario.findOne({email});
+        if(existeEmail){
+            return res.status(400).json({mensaje:'El correo electrónico ingresado ya se encuentra registrado'});
+        }
+        let existeNombreUsuario = await Usuario.findOne({nombreUsuario});
+        if(existeNombreUsuario){
+            return res.status(400).json({mensaje:'El nombre de usuario ingresado ya se encuentra registrado'});
         }
         //crea nuevo usuario
         usuario = new Usuario(req.body);
@@ -47,7 +52,6 @@ exports.crearUsuario = async(req,res)=>{
             res.json({token});
             }
         });
-
     } catch (error) {
         console.log(error);
         res.status(400).send('Hubo un error en el registro');

@@ -1,15 +1,14 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import SendIcon from '@material-ui/icons/Send';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import Typography from '@material-ui/core/Typography';
@@ -19,26 +18,38 @@ import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import AuthContext from './../../context/auth/authContext';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
 const Login = () => {
 
-
+const authContext = useContext(AuthContext);
+const { iniciarSesion, mensaje_login } = authContext;
 /* state para iniciar sesión */
-const [infoUsuario, guardarUsuario] = useState({
-  usuario: '',
+const [usuario, guardarUsuario] = useState({
+  email: '',
   contraseña: ''
 });
 //extraemos los valores de los inputs
-const {usuario, contraseña} = infoUsuario;
+const {email, contraseña} = usuario;
+
 const onChange = (e)=>{
   guardarUsuario({
-    ...infoUsuario,
+    ...usuario,
     [e.target.name] : e.target.value
   })
-}
+};
+
+const onSubmitIniciarSesion = (e) => {
+  e.preventDefault();
+    iniciarSesion({
+      ...usuario
+    });
+};
   const estilos = EstilosComun();
   const copyright = Copyright();
   return (
-    <ValidatorForm>
+    <ValidatorForm onSubmit={onSubmitIniciarSesion}>
       <Container component="main" maxWidth="sm">
         <Card className={estilos.cardInicio} variant="outlined">
       <CssBaseline />
@@ -49,25 +60,25 @@ const onChange = (e)=>{
         <Typography component="h1" variant="h4">
           Inicia sesión
         </Typography>
-        <form className={estilos.formulario} noValidate>
+        <form className={estilos.formulario}>
           <TextValidator
             margin="normal"
             variant="outlined"
             required
             fullWidth
             id="usuario"
-            label="Nombre de Usuario o correo electrónico"
-            name="usuario"
-            value={usuario}
-            validators={['required']}
-            errorMessages={['Este campo es requerido']}
-            autoComplete="usuario"
+            label="Correo electrónico"
+            name="email"
+            value={email}
+            validators={['required', 'isEmail']}
+            errorMessages={['Este campo es requerido', 'Ingrese un correo válido']}
+            autoComplete="email"
             autoFocus
             onChange={onChange}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <AccountCircle />
+                  <AlternateEmailIcon />
                 </InputAdornment>
               ),
             }}
@@ -98,6 +109,11 @@ const onChange = (e)=>{
             control={<Checkbox value="remember" color="primary" />}
             label="Recordar"
           />
+          {mensaje_login?
+            <Alert severity="info">
+            <AlertTitle>Aviso</AlertTitle>
+          {mensaje_login} — <strong>Por favor, verifique sus datos</strong>
+          </Alert>: null}
           <Button
             type="submit"
             fullWidth
