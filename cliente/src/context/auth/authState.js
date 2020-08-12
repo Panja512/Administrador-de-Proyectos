@@ -8,6 +8,7 @@ const AuthState = (props) => {
     const initialState = {
         token: localStorage.getItem('token'),
         autenticado: false,
+        registrado: false,
         usuario_info: null,
         mensaje_registro: null,
         mensaje_login: null
@@ -27,8 +28,6 @@ datos del registro del usuario
             type:REGISTRO_EXITOSO,
             payload: respuesta.data
         });
-        //una vez registrado y autenticado el usuario, lo obtenemos
-        usuarioAutenticado();
         } catch (error) {
         console.log(error.response.data.mensaje);
             dispatch({
@@ -65,6 +64,11 @@ datos del registro del usuario
         try {
             const respuesta = await clienteAxios.post('/api/auth', datos);
             console.log(respuesta);
+            dispatch({
+                type:LOGIN_EXITOSO,
+                payload: respuesta.data
+            });
+            usuarioAutenticado();
         } catch (error) {
             console.log(error.response.data.mensaje);
             dispatch({
@@ -78,6 +82,7 @@ datos del registro del usuario
         value={{
             token: state.token,
             autenticado: state.autenticado,
+            registrado: state.registrado,
             usuario_info: state.usuario_info,
             mensaje_login: state.mensaje_login,
             mensaje_registro: state.mensaje_registro,

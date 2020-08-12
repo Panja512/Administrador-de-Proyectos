@@ -21,15 +21,16 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import AuthContext from './../../context/auth/authContext';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-const Login = () => {
+const Login = (props) => {
 
 const authContext = useContext(AuthContext);
-const { iniciarSesion, mensaje_login } = authContext;
+const { iniciarSesion, autenticado, mensaje_login } = authContext;
 /* state para iniciar sesión */
 const [usuario, guardarUsuario] = useState({
   email: '',
   contraseña: ''
 });
+
 //extraemos los valores de los inputs
 const {email, contraseña} = usuario;
 
@@ -39,6 +40,11 @@ const onChange = (e)=>{
     [e.target.name] : e.target.value
   })
 };
+useEffect(()=>{
+  if(autenticado){
+    props.history.push('/proyectos');
+  }
+},[autenticado, props.history]);
 
 const onSubmitIniciarSesion = (e) => {
   e.preventDefault();
@@ -64,7 +70,6 @@ const onSubmitIniciarSesion = (e) => {
           <TextValidator
             margin="normal"
             variant="outlined"
-            required
             fullWidth
             id="usuario"
             label="Correo electrónico"
@@ -87,7 +92,6 @@ const onSubmitIniciarSesion = (e) => {
             type="password"
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             id="contraseña"
             label="Contraseña"
@@ -109,7 +113,7 @@ const onSubmitIniciarSesion = (e) => {
             control={<Checkbox value="remember" color="primary" />}
             label="Recordar"
           />
-          {mensaje_login?
+          {mensaje_login? 
             <Alert severity="info">
             <AlertTitle>Aviso</AlertTitle>
           {mensaje_login} — <strong>Por favor, verifique sus datos</strong>

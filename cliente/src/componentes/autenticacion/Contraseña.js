@@ -16,7 +16,8 @@ import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-
+import swal from 'sweetalert';
+//TODO: mostrar con sweet alert que el correo ha sido enviado.
 const Contraseña = () => {
 
   const estilos = EstilosComun();
@@ -98,7 +99,9 @@ const onChange = (e)=>{
             </Button>
               </Link>
               </Grid>
-
+              <p align="center">
+                Te enviaremos un correo para que puedas recuperar tu información.
+                </p>
           </Grid>
           </div>
           

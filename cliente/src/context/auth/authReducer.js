@@ -21,8 +21,11 @@ export default (state, action) => {
                 autenticado: false
             };
         case LOGIN_EXITOSO:
+            //PASAREMOS EL TOKEN GENERADO EN EL LADO DEL SERVIDOR
+            localStorage.setItem('token',action.payload.token);
             return{
-
+                ...state,
+                autenticado: true
             };
         case REGISTRO_ERRONEO:
             localStorage.removeItem('token');
@@ -34,11 +37,9 @@ export default (state, action) => {
                 autenticado: false
             };
         case REGISTRO_EXITOSO:
-            //PASAREMOS EL TOKEN GENERADO EN EL LADO DEL SERVIDOR
-            localStorage.setItem('token',action.payload.token);
             return{
                 ...state,
-                autenticado: true
+                registrado: true
             };
         default:
             return state;

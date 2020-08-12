@@ -30,7 +30,7 @@ export const EstilosComun= makeStyles((theme) => ({
             boxShadow: ' 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
             marginLeft: "2rem",
             marginRight: "2rem",
-            marginTop:"1rem"
+            marginTop:"5rem"
             },
     root: {
         flexGrow: 1,
