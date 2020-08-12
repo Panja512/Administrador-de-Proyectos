@@ -7,6 +7,12 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import ProyectoState from './context/proyectos/proyectoState';
 import TareaState from './context/tareas/tareaState';
 import AuthState from './context/auth/authState';
+import tokenAuth from './config/token';
+//revisamos si tenemos un token
+const token = localStorage.getItem('token');
+if (token) {
+  tokenAuth(token);
+}
 function App() {
   console.log(process.env.REACT_APP_BACKEND_URL);
   return (

@@ -12,7 +12,8 @@ export default (state, action) => {
         case OBTENER_INFO_USUARIO:
             return{
                 ...state,
-                usuario_info: action.payload
+                usuario_info: action.payload,
+                autenticado: true
             };
         case BORRAR_MENSAJES:
             return{
@@ -30,15 +31,14 @@ export default (state, action) => {
             localStorage.setItem('token',action.payload.token);
             return{
                 ...state,
-                autenticado: true
+                autenticado: true,
+                registrado: false
             };
         case REGISTRO_ERRONEO:
-            localStorage.removeItem('token');
             return{
                 ...state,
-                token: null,
                 mensaje_registro: action.payload,
-                autenticado: false
+                registrado: false
             };
         case REGISTRO_EXITOSO:
             return{

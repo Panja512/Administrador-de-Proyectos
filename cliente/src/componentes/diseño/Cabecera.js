@@ -1,4 +1,4 @@
-import React,{ useContext } from 'react';
+import React,{ useContext, useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +9,11 @@ import {EstilosComun} from './EstilosComun.js';
 import AuthContext from './../../context/auth/authContext';
 const Cabecera = () => {
   const authContext = useContext(AuthContext);
-  const { usuario_info } = authContext;
+  const { usuario_info, usuarioAutenticado } = authContext;
+
+  useEffect(()=>{
+    usuarioAutenticado();
+  },[]);
 
   const estilos = EstilosComun();
   return (
@@ -18,9 +22,11 @@ const Cabecera = () => {
       <IconButton edge="start" className={estilos.menuButton} color="inherit" aria-label="menu">
         <MenuIcon />
       </IconButton>
+      {usuario_info ? 
       <Typography variant="h6" className={estilos.title}>
-        Bienvenido: <span></span>
+        Bienvenido: <span>{usuario_info.nombre} {usuario_info.apellido}</span>
       </Typography>
+: null}
       <Button color="inherit">Cerrar sesión</Button>
     </Toolbar>
   </AppBar>

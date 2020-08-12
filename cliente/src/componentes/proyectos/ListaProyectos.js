@@ -48,8 +48,7 @@ const ListaProyectos = () => {
                   </List>
                   </Zoom>
                 ) : (
-                  <Alert severity="warning">
-                    <AlertTitle>Atención!</AlertTitle>
+                  <Alert severity="info">
                     No hay proyectos registrados—{" "}
                     <strong>Registre uno para continuar</strong>
                   </Alert>

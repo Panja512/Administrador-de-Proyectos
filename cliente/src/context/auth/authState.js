@@ -91,6 +91,7 @@ datos del registro del usuario
             mensaje_login: state.mensaje_login,
             mensaje_registro: state.mensaje_registro,
             registrarUsuario,
+            usuarioAutenticado,
             iniciarSesion,
             borrarMensajes
         }}
