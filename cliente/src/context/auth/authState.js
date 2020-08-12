@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
-import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, LOGIN_EXITOSO, OBTENER_INFO_USUARIO } from '../../types';
+import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, BORRAR_MENSAJES, LOGIN_EXITOSO, OBTENER_INFO_USUARIO } from '../../types';
 import clienteAxios from './../../config/axios';
 import tokenAuth from './../../config/token';
 const AuthState = (props) => {
@@ -14,7 +14,11 @@ const AuthState = (props) => {
         mensaje_login: null
     };
     const [ state, dispatch ] = useReducer(authReducer, initialState);
-
+    const borrarMensajes = () => {
+        dispatch({
+            type: BORRAR_MENSAJES
+        });
+    };
     //Funciones
     const registrarUsuario = async (datos) => {
         try {
@@ -87,7 +91,8 @@ datos del registro del usuario
             mensaje_login: state.mensaje_login,
             mensaje_registro: state.mensaje_registro,
             registrarUsuario,
-            iniciarSesion
+            iniciarSesion,
+            borrarMensajes
         }}
         >{props.children}
         </AuthContext.Provider>

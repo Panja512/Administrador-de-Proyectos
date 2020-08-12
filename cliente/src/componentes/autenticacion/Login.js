@@ -24,7 +24,7 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 const Login = (props) => {
 
 const authContext = useContext(AuthContext);
-const { iniciarSesion, autenticado, mensaje_login } = authContext;
+const { iniciarSesion, autenticado, mensaje_login, borrarMensajes } = authContext;
 /* state para iniciar sesión */
 const [usuario, guardarUsuario] = useState({
   email: '',
@@ -135,7 +135,7 @@ const onSubmitIniciarSesion = (e) => {
               </Link>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Link to={'/cuentanueva'} variant="body1">
+              <Link onClick={borrarMensajes} to={'/cuentanueva'} variant="body1">
                 {"¿No tienes una cuenta? Regístrate"}
               </Link>
             </Grid>

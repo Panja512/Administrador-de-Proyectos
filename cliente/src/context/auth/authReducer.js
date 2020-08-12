@@ -2,6 +2,7 @@ import {
     OBTENER_INFO_USUARIO,
     LOGIN_ERRONEO,
     LOGIN_EXITOSO,
+    BORRAR_MENSAJES,
     REGISTRO_ERRONEO,
     REGISTRO_EXITOSO
 } from './../../types/index.js';
@@ -13,12 +14,16 @@ export default (state, action) => {
                 ...state,
                 usuario_info: action.payload
             };
+        case BORRAR_MENSAJES:
+            return{
+                mensaje_login: null,
+                mensaje_registro: null
+        };
         case LOGIN_ERRONEO:
             return{
                 ...state,
                 mensaje_login: action.payload,
-                mensaje_registro: null,
-                autenticado: false
+                autenticado: false,
             };
         case LOGIN_EXITOSO:
             //PASAREMOS EL TOKEN GENERADO EN EL LADO DEL SERVIDOR
@@ -33,7 +38,6 @@ export default (state, action) => {
                 ...state,
                 token: null,
                 mensaje_registro: action.payload,
-                mensaje_login: null,
                 autenticado: false
             };
         case REGISTRO_EXITOSO:

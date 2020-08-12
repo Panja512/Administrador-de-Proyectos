@@ -28,7 +28,7 @@ const CuentaNueva = (props) => {
   const copyright = Copyright();
 
 const authContext = useContext(AuthContext);
-const { registrarUsuario, mensaje_registro, registrado } = authContext;
+const { registrarUsuario, mensaje_registro, borrarMensajes, registrado } = authContext;
 /* state para iniciar sesión */
 const [usuario, guardarUsuario] = useState({
   nombre: '',
@@ -235,7 +235,7 @@ const onSubmitUsuario = (e) => {
           </Button>
               </Grid>
               <Grid item xs={6}>
-              <Link to={'/login'}>
+              <Link onClick={borrarMensajes} to={'/login'}>
               <Button
             fullWidth
             type="submit"
@@ -262,4 +262,3 @@ const onSubmitUsuario = (e) => {
   );
 }
 export default CuentaNueva;
- 

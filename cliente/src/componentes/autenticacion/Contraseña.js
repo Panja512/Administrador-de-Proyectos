@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import {EstilosComun} from './../diseño/EstilosComun.js';
 import {Copyright} from './../diseño/EstilosComun.js';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import AuthContext from './../../context/auth/authContext';
 import swal from 'sweetalert';
 //TODO: mostrar con sweet alert que el correo ha sido enviado.
 const Contraseña = () => {
@@ -23,6 +24,8 @@ const Contraseña = () => {
   const estilos = EstilosComun();
   const copyright = Copyright();
 
+const authContext = useContext(AuthContext);
+const { borrarMensajes } = authContext;
 /* state para iniciar sesión */
 const [usuario, guardarUsuario] = useState({
     email:''
@@ -87,7 +90,7 @@ const onChange = (e)=>{
           </Button>
               </Grid>
               <Grid item xs={6}>
-              <Link to={'/login'}>
+              <Link onClick={borrarMensajes} to={'/login'}>
               <Button
             fullWidth
             type="submit"

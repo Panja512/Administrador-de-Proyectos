@@ -13,8 +13,8 @@ exports.autenticarUsuario = async(req,res) => {
       const { email, contraseña } = req.body;
       try {
         //revisamos si el usuario está registrado
-        let existeEmail = await Usuario.findOne({email});
-        if(!existeEmail){
+        let usuario = await Usuario.findOne({email});
+        if(!usuario){
             return res.status(400).json({mensaje:'El correo electrónico es incorrecto'});
         }
         const contraseñaCorrecta = await bcryptjs.compare(contraseña, usuario.contraseña);
