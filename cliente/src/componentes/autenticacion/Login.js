@@ -41,7 +41,6 @@ const onChange = (e)=>{
   })
 };
 useEffect(()=>{
-  localStorage.removeItem('token');
   if(autenticado){
     props.history.push('/proyectos');
   }

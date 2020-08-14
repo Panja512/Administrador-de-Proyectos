@@ -9,7 +9,7 @@ import {EstilosComun} from './EstilosComun.js';
 import AuthContext from './../../context/auth/authContext';
 const Cabecera = () => {
   const authContext = useContext(AuthContext);
-  const { usuario_info, usuarioAutenticado } = authContext;
+  const { usuario_info, usuarioAutenticado, cerrarSesion } = authContext;
 
   useEffect(()=>{
     usuarioAutenticado();
@@ -27,7 +27,7 @@ const Cabecera = () => {
         Bienvenido: <span>{usuario_info.nombre} {usuario_info.apellido}</span>
       </Typography>
 : null}
-      <Button color="inherit">Cerrar sesión</Button>
+      <Button onClick={()=>cerrarSesion()} color="inherit">Cerrar sesión</Button>
     </Toolbar>
   </AppBar>
   );}

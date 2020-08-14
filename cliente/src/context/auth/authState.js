@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
-import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, BORRAR_MENSAJES, LOGIN_EXITOSO, OBTENER_INFO_USUARIO } from '../../types';
+import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, BORRAR_MENSAJES, BORRAR_TOKEN, LOGIN_EXITOSO, OBTENER_INFO_USUARIO, CERRAR_SESION } from '../../types';
 import clienteAxios from './../../config/axios';
 import tokenAuth from './../../config/token';
 const AuthState = (props) => {
@@ -11,7 +11,8 @@ const AuthState = (props) => {
         registrado: false,
         usuario_info: null,
         mensaje_registro: null,
-        mensaje_login: null
+        mensaje_login: null,
+        cargando: true
     };
     const [ state, dispatch ] = useReducer(authReducer, initialState);
     const borrarMensajes = () => {
@@ -81,10 +82,18 @@ datos del registro del usuario
             });
         }
     };
+    const cerrarSesion =()=>{
+        localStorage.removeItem('token');
+        dispatch({
+            type: CERRAR_SESION
+        });
+    };
+
     return (
         <AuthContext.Provider
         value={{
             token: state.token,
+            cargando: state.cargando,
             autenticado: state.autenticado,
             registrado: state.registrado,
             usuario_info: state.usuario_info,
@@ -93,6 +102,7 @@ datos del registro del usuario
             registrarUsuario,
             usuarioAutenticado,
             iniciarSesion,
+            cerrarSesion,
             borrarMensajes
         }}
         >{props.children}

@@ -8,7 +8,7 @@ import AuthContext from './../../context/auth/authContext';
 
 const Proyectos = () => {
   const authContext = useContext(AuthContext);
-  const {usuarioAutenticado } = authContext;
+  const { usuarioAutenticado } = authContext;
 
   useEffect(()=>{
     usuarioAutenticado();
