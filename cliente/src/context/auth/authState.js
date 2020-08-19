@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
-import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, BORRAR_MENSAJES, BORRAR_TOKEN, LOGIN_EXITOSO, OBTENER_INFO_USUARIO, CERRAR_SESION } from '../../types';
+import { REGISTRO_ERRONEO, REGISTRO_EXITOSO, LOGIN_ERRONEO, BORRAR_MENSAJES, LOGIN_EXITOSO, OBTENER_INFO_USUARIO, CERRAR_SESION } from '../../types';
 import clienteAxios from './../../config/axios';
 import tokenAuth from './../../config/token';
 const AuthState = (props) => {

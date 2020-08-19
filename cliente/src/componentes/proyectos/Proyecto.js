@@ -18,6 +18,7 @@ import swal from 'sweetalert';
 /* este componente permite manejar el nombre y la fecha de inicio de los proyectos, se vincula
 directamente con ListaProyectos.js*/
 const Proyecto = ({ proyecto }) => {
+
   const proyectosContext = useContext(ProyectoContext);
   const tareasContext = useContext(TareaContext);
   const {
@@ -64,9 +65,9 @@ const Proyecto = ({ proyecto }) => {
           primary={proyecto.nombre}
           secondary={
             <>
-              <Typography>Inicio: {proyecto.fechaInicioProyecto}</Typography>
+              <Typography>Inicio: {proyecto.fechaInicio}</Typography>
               <Typography>Duración en horas: {proyecto.duracion}</Typography>
-              <Typography>Fin: {proyecto.fechaFinProyecto}</Typography>
+              <Typography>Fin: {proyecto.fechaFin}</Typography>
             </>
           }
         />

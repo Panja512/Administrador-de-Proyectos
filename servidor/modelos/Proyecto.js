@@ -10,13 +10,16 @@ const ProyectoSchema = mongoose.Schema({
         ref: 'Usuario' //hace referencia al modelo usuario en el cual haremos el join
     },
     fechaInicio:{
-        type: Date
+        type: String,
+        required: true
     },
     fechaFin:{
-        type: Date
+        type: String,
+        required: true
     },
     duracion:{
-        type: Number
+        type: Number,
+        required: true
     }
 });
 module.exports = mongoose.model('Proyecto', ProyectoSchema);

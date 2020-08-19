@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, Fragment, useEffect } from "react";
 import { EstilosComun } from "./../diseño/EstilosComun.js";
 import { Copyright } from "./../diseño/EstilosComun.js";
 import Container from "@material-ui/core/Container";
@@ -22,8 +22,12 @@ const ListaProyectos = () => {
   const {
     proyectos,
     lista_proyecto,
+    mostrarListaProyectos,
     mostrarFormularioProyectos,
   } = proyectosContext;
+  useEffect(()=>{
+    mostrarListaProyectos();
+  },[]);
   return (
     <Fragment>
       {lista_proyecto ? (
@@ -43,7 +47,7 @@ const ListaProyectos = () => {
                   HACIA EL COMPONENTE PROYECTO.JS, ENTONCES MANDAREMOS TODOS LOS OBJETOS QUE FORMAN
                   PARTE DEL ARREGLO PARA QUE EL OTRO COMPONENTE LOS MUESTRE*/}
                       {proyectos.map((proyecto) => (
-                            <Proyecto key={proyecto.id} proyecto={proyecto} />
+                            <Proyecto key={proyecto._id} proyecto={proyecto}/>
                           ))}
                   </List>
                   </Zoom>

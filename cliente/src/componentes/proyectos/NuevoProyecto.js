@@ -15,6 +15,8 @@ import NavigateBeforeTwoToneIcon from "@material-ui/icons/NavigateBeforeTwoTone"
 import EditIcon from '@material-ui/icons/Edit';
 import ProyectoContext from "./../../context/proyectos/proyectoContext";
 import swal from 'sweetalert';
+import { DatePicker } from "@material-ui/pickers";
+import { format } from "date-fns";
 
 const NuevoProyecto = () => {
   //obtener el state del formulario
@@ -39,33 +41,37 @@ const NuevoProyecto = () => {
       guardarProyecto({
         nombre: '',
         duracion: '',
-        fechaInicioProyecto: '',
-        fechaFinProyecto: ''
-      })
+        fechaInicio: '',
+        fechaFin: ''
+      });
     }
   },[proyecto_seleccionado])
 
   /* state para controlar el contenido de los inputs */
   const [proyecto, guardarProyecto] = useState({
     nombre: "",
-    duracion: "",
-    fechaInicioProyecto: "",
-    fechaFinProyecto: "",
+    duracion: ""
   });
-  const { nombre, duracion, fechaInicioProyecto, fechaFinProyecto } = proyecto;
+  const [fechaInicio, cambiarFechaInicio] = useState(new Date());
+  const [fechaFin, cambiarFechaFin] = useState(new Date());
+  const nombre = proyecto.nombre;
+  const duracion = proyecto.duracion;
+
   const actualizarState = (e) => {
     guardarProyecto({
-      ...proyecto,
+      nombre,
+      duracion,
       [e.target.name]: e.target.value,
     });
   };
+
   // para registrar el formulario y volver a mostrar la lista de los proyectos
   const resetearFormProyecto = () => {
     guardarProyecto({
       nombre: "",
       duracion: "",
-      fechaInicioProyecto: "",
-      fechaFinProyecto: "",
+      fechaInicio: "",
+      fechaFin: "",
     });
     mostrarListaProyectos();
   };
@@ -75,14 +81,13 @@ const NuevoProyecto = () => {
     //validamos el proyecto
     if (
       nombre.trim() === "" ||
-      duracion.trim() === "" ||
-      fechaInicioProyecto.trim() === "" ||
-      fechaFinProyecto.trim() === ""
+      duracion.trim() === ""
     ) {
       mostrarErrorProyecto();
       swal("Atención!","Debe completar todos los campos para continuar","warning");
       return;
     }
+    
     else{
       if (proyecto_seleccionado) {
         swal("Operación completada","Proyecto modificado correctamente","success");
@@ -94,6 +99,8 @@ const NuevoProyecto = () => {
    /*  para distinguir registro de modificación, si no hay un proyecto seleccionado registramos,
     sino modificamos */
     if (proyecto_seleccionado === null) {
+      proyecto.fechaInicio = format(fechaInicio,'dd/MM/yyyy');
+      proyecto.fechaFin = format(fechaFin,'dd/MM/yyyy');
     //agregamos al state
       registrarProyecto(proyecto);
     } else {
@@ -163,45 +170,31 @@ const NuevoProyecto = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
+                    <DatePicker
                       fullWidth
-                      type="date"
                       margin="normal"
+                      disablePast
+                      format="dd/MM/yyyy"
+                      maxDate={fechaFin}
                       id="fechaInicio"
                       label="Fecha de inicio"
-                      name="fechaInicioProyecto"
-                      value={fechaInicioProyecto}
-                      onChange={actualizarState}
-                      onKeyDown={(e) => e.preventDefault()}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start"></InputAdornment>
-                        ),
-                        inputProps: {
-                          min: new Date().toISOString().split("T")[0],
-                        },
-                      }}
+                      name="fechaInicio"
+                      value={fechaInicio}
+                      onChange={cambiarFechaInicio}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
+                    <DatePicker
                       fullWidth
-                      type="date"
                       margin="normal"
+                      disablePast
+                      format="dd/MM/yyyy"
                       id="fechaFin"
+                      minDate={fechaInicio}
                       label="Fecha aproximada de finalización"
-                      name="fechaFinProyecto"
-                      value={fechaFinProyecto}
-                      onChange={actualizarState}
-                      onKeyDown={(e) => e.preventDefault()}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start"></InputAdornment>
-                        ),
-                        inputProps: {
-                          min: new Date().toISOString().split("T")[0],
-                        },
-                      }}
+                      name="fechaFin"
+                      value={fechaFin}
+                      onChange={cambiarFechaFin}
                     />
                   </Grid>
                 </Grid>

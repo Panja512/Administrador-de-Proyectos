@@ -57,9 +57,10 @@ import {
           lista_proyecto: false
         };
       case LISTA_PROYECTO:
+        console.log(action.payload);
         return {
           ...state,
-          proyectos: [...state.proyectos],
+          proyectos: action.payload,
           formulario_proyecto: false,
           proyecto_seleccionado: null,
           lista_proyecto: true,

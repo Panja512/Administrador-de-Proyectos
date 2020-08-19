@@ -9,6 +9,10 @@ import TareaState from './context/tareas/tareaState';
 import AuthState from './context/auth/authState';
 import tokenAuth from './config/token';
 import RutaPrivada from './componentes/rutas/RutaPrivada';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import es from "date-fns/locale/es";
+
 //revisamos si tenemos un token
 const token = localStorage.getItem('token');
 if (token) {
@@ -17,6 +21,7 @@ if (token) {
 function App() {
   console.log(process.env.REACT_APP_BACKEND_URL);
   return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={es} >
     <ProyectoState>
       <TareaState>
 {/*    para crear las rutas necesitamos el componente Router y Switch, entonces mandamos el path y el componente al
@@ -33,6 +38,7 @@ function App() {
         </AuthState>
       </TareaState>
     </ProyectoState>
+    </MuiPickersUtilsProvider>
     );
 }
 

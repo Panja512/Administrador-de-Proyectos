@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import ProyectoContext from "./proyectoContext";
 import ProyectoReducer from "./proyectoReducer";
-import { v4 as uuid } from "uuid";
+import clienteAxios from './../../config/axios';
 
 import {
   FORMULARIO_PROYECTO,
@@ -15,29 +15,7 @@ import {
 
 const ProyectoState = (props) => {
   const initialState = {
-    proyectos: [
-      {
-        nombre: "Sistema de control de stock",
-        duracion: "2000",
-        fechaInicioProyecto: "2020-07-25",
-        fechaFinProyecto: "2020-10-22",
-        id: 1,
-      },
-      {
-        nombre: "Sistema contable",
-        duracion: "2500",
-        fechaInicioProyecto: "2020-08-25",
-        fechaFinProyecto: "2020-11-10",
-        id: 2,
-      },
-      {
-        nombre: "E-commerce",
-        duracion: "2000",
-        fechaInicioProyecto: "2020-09-25",
-        fechaFinProyecto: "2020-12-09",
-        id: 3,
-      },
-    ],
+    proyectos: [],
     proyecto_seleccionado: null,
     formulario_proyecto: false,
     error_formulario_proyecto: false,
@@ -54,10 +32,17 @@ const ProyectoState = (props) => {
     });
   };
   //mostrar proyectos
-  const mostrarListaProyectos = () => {
-    dispatch({
-      type: LISTA_PROYECTO,
-    });
+  const mostrarListaProyectos = async() => {
+    try {
+      const resultado = await clienteAxios.get('/api/proyectos');
+      dispatch({
+        type: LISTA_PROYECTO,
+        payload: resultado.data
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
   };
   //al seleccionar un proyecto en la lista de proyectos
   const seleccionarProyecto = (proyectoId) => {
@@ -67,13 +52,18 @@ const ProyectoState = (props) => {
     });
   };
   //Registrar nuevo proyecto
-  const registrarProyecto = (proyecto) => {
-    proyecto.id = uuid();
-    //insertamos el proyecto en el state
-    dispatch({
-      type: REGISTRAR_PROYECTO,
-      payload: proyecto,
-    });
+  const registrarProyecto = async (proyecto) => {
+    try {
+      const resultado = await clienteAxios.post('/api/proyectos', proyecto);
+      console.log(resultado);
+          //insertamos el proyecto en el state
+      dispatch({
+        type: REGISTRAR_PROYECTO,
+        payload: resultado.data,
+      });
+    } catch (error) {
+      console.log(error.data);
+    }
   };
   //Modificar un proyecto seleccionado
   const modificarProyecto = (proyecto) => {
