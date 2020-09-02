@@ -9,14 +9,6 @@ const ProyectoSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario' //hace referencia al modelo usuario en el cual haremos el join
     },
-    fechaInicio:{
-        type: String,
-        required: true
-    },
-    fechaFin:{
-        type: String,
-        required: true
-    },
     duracion:{
         type: Number,
         required: true

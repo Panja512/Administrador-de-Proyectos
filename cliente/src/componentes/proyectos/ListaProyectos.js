@@ -25,9 +25,11 @@ const ListaProyectos = () => {
     mostrarListaProyectos,
     mostrarFormularioProyectos,
   } = proyectosContext;
+
   useEffect(()=>{
     mostrarListaProyectos();
   },[]);
+
   return (
     <Fragment>
       {lista_proyecto ? (

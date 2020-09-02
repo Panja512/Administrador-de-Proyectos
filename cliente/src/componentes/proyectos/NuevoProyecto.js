@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import TimerIcon from "@material-ui/icons/Timer";
@@ -15,104 +14,84 @@ import NavigateBeforeTwoToneIcon from "@material-ui/icons/NavigateBeforeTwoTone"
 import EditIcon from '@material-ui/icons/Edit';
 import ProyectoContext from "./../../context/proyectos/proyectoContext";
 import swal from 'sweetalert';
-import { DatePicker } from "@material-ui/pickers";
-import { format } from "date-fns";
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const NuevoProyecto = () => {
   //obtener el state del formulario
   const proyectosContext = useContext(ProyectoContext);
-
   const {
     formulario_proyecto,
     proyecto_seleccionado,
-    mostrarErrorProyecto,
     mostrarListaProyectos,
     registrarProyecto,
     modificarProyecto
   } = proyectosContext;
 
-  /* use effect para detectar si hay un proyecto seleccionado */
-  useEffect(()=>{
-    if (proyecto_seleccionado !== null) {
-      guardarProyecto({
-        ...proyecto_seleccionado[0]
-      });
-    } else {
-      guardarProyecto({
-        nombre: '',
-        duracion: '',
-        fechaInicio: '',
-        fechaFin: ''
-      });
-    }
-  },[proyecto_seleccionado])
+    /* use effect para detectar si hay un proyecto seleccionado y cargar los inputs*/
+    useEffect(()=>{
+      if (proyecto_seleccionado !== null) {
+        guardarProyecto({
+          ...proyecto_seleccionado[0]
+        });
+      } else {
+        guardarProyecto({
+          nombre: '',
+          duracion: '',
+        });
+      }
+    },[proyecto_seleccionado])
 
-  /* state para controlar el contenido de los inputs */
-  const [proyecto, guardarProyecto] = useState({
-    nombre: "",
-    duracion: ""
-  });
-  const [fechaInicio, cambiarFechaInicio] = useState(new Date());
-  const [fechaFin, cambiarFechaFin] = useState(new Date());
-  const nombre = proyecto.nombre;
-  const duracion = proyecto.duracion;
-
-  const actualizarState = (e) => {
-    guardarProyecto({
-      nombre,
-      duracion,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // para registrar el formulario y volver a mostrar la lista de los proyectos
-  const resetearFormProyecto = () => {
-    guardarProyecto({
+    /* state para controlar el contenido de los inputs */
+    const [proyecto, guardarProyecto] = useState({
       nombre: "",
       duracion: "",
-      fechaInicio: "",
-      fechaFin: "",
     });
-    mostrarListaProyectos();
-  };
 
-  const onSubmitProyecto = (e) => {
-    e.preventDefault();
-    //validamos el proyecto
-    if (
-      nombre.trim() === "" ||
-      duracion.trim() === ""
-    ) {
-      mostrarErrorProyecto();
-      swal("Atención!","Debe completar todos los campos para continuar","warning");
-      return;
-    }
-    
-    else{
+    //iniciamos las variables para los inputs
+    const {nombre, duracion} = proyecto;
+
+    const actualizarState = (e) => {
+      guardarProyecto({
+        nombre,
+        duracion,
+        [e.target.name]: e.target.value,
+      });
+    };
+    // para registrar el formulario y volver a mostrar la lista de los proyectos
+    const resetearFormProyecto = () => {
+      guardarProyecto({
+        nombre: "",
+        duracion: "",
+      });
+      if(!proyecto_seleccionado){
+        mostrarListaProyectos();
+      }
+    };
+
+    const onSubmitProyecto = (e) => {
+      e.preventDefault();
+      if (proyecto_seleccionado === null) {
+        registrarProyecto(proyecto);
+      } else {
+        proyecto._id = proyecto_seleccionado[0]._id
+        proyecto.creador = proyecto_seleccionado[0].creador
+        modificarProyecto(proyecto);
+      }
       if (proyecto_seleccionado) {
         swal("Operación completada","Proyecto modificado correctamente","success");
 
       } else {
         swal("Operación completada","Proyecto registrado correctamente","success");
       }
-    }
-   /*  para distinguir registro de modificación, si no hay un proyecto seleccionado registramos,
-    sino modificamos */
-    if (proyecto_seleccionado === null) {
-      proyecto.fechaInicio = format(fechaInicio,'dd/MM/yyyy');
-      proyecto.fechaFin = format(fechaFin,'dd/MM/yyyy');
-    //agregamos al state
-      registrarProyecto(proyecto);
-    } else {
-      modificarProyecto(proyecto);
-    }
-    //reseteamos el formulario
-    resetearFormProyecto();
-  };
-  const estilos = EstilosComun();
-  const copyright = Copyright();
+      //reseteamos el formulario
+      resetearFormProyecto();
+    };
+
+    const estilos = EstilosComun();
+    const copyright = Copyright();
+  
   return (
-    <Fragment>
+    <ValidatorForm onSubmit={onSubmitProyecto}>
       {formulario_proyecto ? (
         <Fragment>
           <Container component="main" maxwidth="sm" />
@@ -126,10 +105,12 @@ const NuevoProyecto = () => {
                 ></CardHeader>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
-                    <TextField
+                    <TextValidator
                       autoFocus
                       variant="outlined"
                       fullWidth
+                      validators={['required']}
+                      errorMessages={['Ingrese el nombre del proyecto']}
                       margin="normal"
                       id="nombre"
                       label="Nombre del proyecto"
@@ -147,11 +128,12 @@ const NuevoProyecto = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
+                    <TextValidator
                       fullWidth
-                      type="number"
                       variant="outlined"
                       margin="normal"
+                      validators={['required', 'isNumber']}
+                      errorMessages={['Ingrese la duración del proyecto','Sólo números!']}
                       required
                       id="duracion"
                       label="Duración del proyecto"
@@ -169,34 +151,6 @@ const NuevoProyecto = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <DatePicker
-                      fullWidth
-                      margin="normal"
-                      disablePast
-                      format="dd/MM/yyyy"
-                      maxDate={fechaFin}
-                      id="fechaInicio"
-                      label="Fecha de inicio"
-                      name="fechaInicio"
-                      value={fechaInicio}
-                      onChange={cambiarFechaInicio}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <DatePicker
-                      fullWidth
-                      margin="normal"
-                      disablePast
-                      format="dd/MM/yyyy"
-                      id="fechaFin"
-                      minDate={fechaInicio}
-                      label="Fecha aproximada de finalización"
-                      name="fechaFin"
-                      value={fechaFin}
-                      onChange={cambiarFechaFin}
-                    />
-                  </Grid>
                 </Grid>
                 <Grid container spacing={1} justify="center">
                   <Grid item sm={4} xs={12}>
@@ -206,7 +160,6 @@ const NuevoProyecto = () => {
                       type="submit"
                       className={estilos.boton}
                       color="primary"
-                      onClick={onSubmitProyecto}
                     >
                        {proyecto_seleccionado ? <EditIcon />
                       : <PlaylistAddCheckIcon/>}
@@ -219,7 +172,7 @@ const NuevoProyecto = () => {
                       fullWidth
                       variant="outlined"
                       className={estilos.boton}
-                      onClick={() => resetearFormProyecto()}
+                      onClick={mostrarListaProyectos}
                     >
                       <NavigateBeforeTwoToneIcon />
                       Volver a proyectos
@@ -232,7 +185,7 @@ const NuevoProyecto = () => {
           </Card>
         </Fragment>
       ) : null}
-    </Fragment>
+    </ValidatorForm>
   );
 };
 

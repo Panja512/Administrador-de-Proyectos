@@ -26,6 +26,7 @@ const Proyecto = ({ proyecto }) => {
     eliminarProyecto,
     mostrarFormularioProyectos
   } = proyectosContext;
+  
   const { obtenerTareasPorProyecto } = tareasContext;
   //funcion que permite tanto seleccionar el proyecto y mostrar las tareas asociadas
   const seleccionarProyectoMostrarTareas = (id) => {
@@ -65,9 +66,7 @@ const Proyecto = ({ proyecto }) => {
           primary={proyecto.nombre}
           secondary={
             <>
-              <Typography>Inicio: {proyecto.fechaInicio}</Typography>
               <Typography>Duración en horas: {proyecto.duracion}</Typography>
-              <Typography>Fin: {proyecto.fechaFin}</Typography>
             </>
           }
         />
@@ -76,7 +75,7 @@ const Proyecto = ({ proyecto }) => {
             <IconButton
               color="primary"
               edge="end"
-              onClick={() => seleccionarProyectoMostrarTareas(proyecto.id)}
+              onClick={() => seleccionarProyectoMostrarTareas(proyecto._id)}
             >
               <FormatListNumberedIcon />
             </IconButton>
@@ -85,7 +84,7 @@ const Proyecto = ({ proyecto }) => {
             <IconButton
               color="inherit"
               edge="end"
-              onClick={() => seleccionarProyectoModificar(proyecto.id)}
+              onClick={() => seleccionarProyectoModificar(proyecto._id)}
             >
               <EditTwoToneIcon />
             </IconButton>
@@ -95,7 +94,7 @@ const Proyecto = ({ proyecto }) => {
               color="secondary"
               edge="end"
               aria-label="delete"
-              onClick={() => eliminarProyectoSeleccionado(proyecto.id)}
+              onClick={() => eliminarProyectoSeleccionado(proyecto._id)}
             >
               <DeleteIcon />
             </IconButton>

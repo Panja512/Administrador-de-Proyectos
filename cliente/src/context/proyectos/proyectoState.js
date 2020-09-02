@@ -6,7 +6,6 @@ import clienteAxios from './../../config/axios';
 import {
   FORMULARIO_PROYECTO,
   LISTA_PROYECTO,
-  VALIDAR_FORMULARIO_PROYECTO,
   SELECCIONAR_PROYECTO_ACTUAL,
   REGISTRAR_PROYECTO,
   MODIFICAR_PROYECTO,
@@ -18,7 +17,6 @@ const ProyectoState = (props) => {
     proyectos: [],
     proyecto_seleccionado: null,
     formulario_proyecto: false,
-    error_formulario_proyecto: false,
     lista_proyecto: true,
   };
 
@@ -42,7 +40,6 @@ const ProyectoState = (props) => {
     } catch (error) {
       console.log(error);
     }
-
   };
   //al seleccionar un proyecto en la lista de proyectos
   const seleccionarProyecto = (proyectoId) => {
@@ -55,7 +52,6 @@ const ProyectoState = (props) => {
   const registrarProyecto = async (proyecto) => {
     try {
       const resultado = await clienteAxios.post('/api/proyectos', proyecto);
-      console.log(resultado);
           //insertamos el proyecto en el state
       dispatch({
         type: REGISTRAR_PROYECTO,
@@ -66,40 +62,43 @@ const ProyectoState = (props) => {
     }
   };
   //Modificar un proyecto seleccionado
-  const modificarProyecto = (proyecto) => {
-    //modificamos el proyecto seleccionado
-    dispatch({
-      type: MODIFICAR_PROYECTO,
-      payload: proyecto,
-    });
+  const modificarProyecto = async (proyecto) => {
+    try {
+      const resultado = await clienteAxios.put(`/api/proyectos/${proyecto._id}`,proyecto);
+      dispatch({
+        //modificamos el proyecto seleccionado
+        type: MODIFICAR_PROYECTO,
+        payload: resultado.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   //Eliminar un proyecto desde la lista de proyectos
-  const eliminarProyecto = (proyectoId) => {
-    dispatch({
-      type: ELIMINAR_PROYECTO,
-      payload: proyectoId,
-    });
+  const eliminarProyecto = async (proyectoId) => {
+    try {
+      await clienteAxios.delete(`/api/proyectos/${proyectoId}`);
+      dispatch({
+        type: ELIMINAR_PROYECTO,
+        payload: proyectoId,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  //validaciones de error
-  const mostrarErrorProyecto = () => {
-    dispatch({
-      type: VALIDAR_FORMULARIO_PROYECTO,
-    });
-  };
+
   return (
     <ProyectoContext.Provider
       value={{
         proyectos: state.proyectos,
         formulario_proyecto: state.formulario_proyecto,
         proyecto_seleccionado: state.proyecto_seleccionado,
-        error_formulario_proyecto: state.error_formulario_proyecto,
         lista_proyecto: state.lista_proyecto,
         registrarProyecto,
         modificarProyecto,
         eliminarProyecto,
         seleccionarProyecto,
         mostrarFormularioProyectos,
-        mostrarErrorProyecto,
         mostrarListaProyectos,
       }}
     >

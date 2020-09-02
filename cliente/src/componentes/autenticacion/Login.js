@@ -100,6 +100,7 @@ const onSubmitIniciarSesion = (e) => {
             validators={['required']}
             errorMessages={['Este campo es requerido']}
             onChange={onChange}
+            autoComplete="current-password"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

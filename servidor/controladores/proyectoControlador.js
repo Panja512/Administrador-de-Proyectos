@@ -39,16 +39,10 @@ exports.modificarProyecto = async(req,res) => {
         return res.status(400).json({ errores: errores.array()});
     }
     //array destructuring para sacar información del proyecto
-    const { nombre, fechaInicio, fechaFin, duracion } = req.body;
+    const { nombre, duracion } = req.body;
     const nuevoProyecto = {};
     if(nombre){
         nuevoProyecto.nombre = nombre;
-    }
-    if(fechaInicio){
-        nuevoProyecto.fechaInicio = fechaInicio;
-    }
-    if(fechaFin){
-        nuevoProyecto.fechaFin = fechaFin;
     }
     if(duracion){
         nuevoProyecto.duracion = duracion;
@@ -65,8 +59,9 @@ exports.modificarProyecto = async(req,res) => {
             return res.status(401).json({mensaje:'Usuario no autorizado'});
         }
         //modificamos el proyecto (le tenemos que pasar el id y definir el nuevo valor)
-        proyecto = await Proyecto.findByIdAndUpdate({_id: req.params.id}, { $set: nuevoProyecto},
-        { new: true});
+        proyecto = await Proyecto.findOneAndUpdate({_id: req.params.id },
+        { $set : nuevoProyecto});
+
         res.json({mensaje: 'El proyecto ha sido modificado correctamente'});
     } catch (error) {
         console.log(error);
