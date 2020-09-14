@@ -22,9 +22,8 @@ directamente con ListaTareas.js*/
 const Tarea = ({ tarea }) => {
   const tareasContext = useContext(TareaContext);
   const proyectosContext = useContext(ProyectoContext);
-  const { eliminarTarea, seleccionarTarea, mostrarFormularioTareas, obtenerTareasPorProyecto } = tareasContext;
+  const { eliminarTarea, seleccionarTarea, modificarTarea, mostrarFormularioTareas, obtenerTareasPorProyecto } = tareasContext;
   const { proyecto_seleccionado } = proyectosContext;
-  const [deshabilitado, deshabilitarCheck] = useState(false);
 
   if (!proyecto_seleccionado) {
     return <h2></h2>;
@@ -32,11 +31,17 @@ const Tarea = ({ tarea }) => {
   // HAY QUE ACCEDER AL ARREGLO DE LOS PROYECTOS Y APLICAR ARRAY DESTRUCTURING
   const [proyectoActual] = proyecto_seleccionado;
 
-  const onCheckClick = () => {
-    deshabilitarCheck(!deshabilitado);
-    tarea.estado = true;
-    obtenerTareasPorProyecto(proyectoActual._id);
+  const cambiarEstado = (tarea) => {
+    if(tarea.estado){
+      tarea.estado = false;
+    }
+    else{
+      tarea.estado = true;
+    }
+    tarea.proyecto = proyectoActual._id;
+    modificarTarea(tarea);
   };
+
   const seleccionarTareaModificar = (id) => {
     seleccionarTarea(id);
     mostrarFormularioTareas();
@@ -82,13 +87,14 @@ const Tarea = ({ tarea }) => {
             {tarea.estado ? (
               <FormControlLabel
                 control={
-                  <Switch color="primary" checked={!deshabilitado} disabled />
+                  <Switch color="primary" checked={tarea.estado} onClick={() => cambiarEstado(tarea)}
+                  />
                 }
                 label="Completa"
               />
             ) : (
               <FormControlLabel
-                control={<Switch color="secondary" onChange={onCheckClick} />}
+                control={<Switch color="secondary" checked={tarea.estado} onClick={() => cambiarEstado(tarea)}/>}
                 label="Incompleta"
               />
             )}

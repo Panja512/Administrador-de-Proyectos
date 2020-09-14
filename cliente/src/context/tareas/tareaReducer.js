@@ -32,16 +32,15 @@ import {
         return {
           ...state,
           tarea_seleccionada: state.tareasxproyecto.filter(
-          (tarea_seleccionada) => tarea_seleccionada.id === action.payload
+          (tarea_seleccionada) => tarea_seleccionada._id === action.payload
           ),
           lista_tareas: false
         }
       case MODIFICAR_TAREA:
         return {
           ...state,
-          tareasxproyecto: state.tareasxproyecto.map(tarea => tarea.id === action.payload.id ?
+          tareasxproyecto: state.tareasxproyecto.map(tarea => tarea._id === action.payload._id ?
           action.payload : tarea),
-          lista_tareas: true,
         };
       case ELIMINAR_TAREA:
         return {

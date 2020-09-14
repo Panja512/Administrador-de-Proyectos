@@ -69,15 +69,12 @@ exports.modificarTarea = async (req,res) => {
     //array destructuring para sacar información de la tarea
     const { nombre, duracion, estado, proyecto} = req.body;
     const nuevaTarea = {};
-    if(nombre){
-        nuevaTarea.nombre = nombre;
-    }
-    if(duracion){
-        nuevaTarea.duracion = duracion;
-    }
-    if(estado){
-        nuevaTarea.estado = estado;
-    }
+    nuevaTarea.nombre = nombre;
+
+    nuevaTarea.duracion = duracion;
+
+    nuevaTarea.estado = estado;
+
     try {
         //revisamos el ID de la tarea
         let tarea = await Tarea.findById(req.params.id);
