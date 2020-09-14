@@ -63,9 +63,6 @@ const NuevoProyecto = () => {
         nombre: "",
         duracion: "",
       });
-      if(!proyecto_seleccionado){
-        mostrarListaProyectos();
-      }
     };
 
     const onSubmitProyecto = (e) => {

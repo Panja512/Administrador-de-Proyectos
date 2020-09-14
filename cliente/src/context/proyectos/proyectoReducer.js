@@ -19,8 +19,6 @@ import {
         return {
           ...state,
           proyectos: [...state.proyectos, action.payload],
-          formulario_proyecto: false,
-          lista_proyecto: true,
         };
       case MODIFICAR_PROYECTO:
         return {

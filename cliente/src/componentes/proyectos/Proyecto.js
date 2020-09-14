@@ -40,8 +40,8 @@ const Proyecto = ({ proyecto }) => {
   };
   const eliminarProyectoSeleccionado = (id) => {
     swal({
-      title: "¿Está seguro?",
-      text: "Una vez que elimine, no podrá recuperar la información del proyecto ni sus tareas asociadas.",
+      title: `Está a punto de eliminar el proyecto: ${proyecto.nombre}`,
+      text: "Una vez que elimine, no podrá recuperar la información del mismo ni de sus tareas asociadas",
       icon: "warning",
       buttons: ["Cancelar","Confirmar"],
       dangerMode: true,
@@ -49,7 +49,7 @@ const Proyecto = ({ proyecto }) => {
     .then((eliminar) => {
       if (eliminar) {
         eliminarProyecto(id);
-        swal("Operación completada","El proyecto ha sido eliminado","success");
+        swal("Operación completada",`El proyecto ${proyecto.nombre} ha sido eliminado`,"success");
       } else {
         swal("Operación cancelada");
       }

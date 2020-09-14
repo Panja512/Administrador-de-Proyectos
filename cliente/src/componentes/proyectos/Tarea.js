@@ -49,8 +49,8 @@ const Tarea = ({ tarea }) => {
   //eliminamos una tarea y se actualiza la lista de tareas
   const eliminarTareaActualizarLista = (id) => {
     swal({
-      title: "¿Está seguro?",
-      text: "Una vez que elimine, no podrá recuperar la tarea seleccionada",
+      title: `Está a punto de eliminar la tarea: ${tarea.nombre}`,
+      text: "Una vez que elimine, no podrá recuperar la información de la misma",
       icon: "warning",
       buttons: ["Cancelar","Confirmar"],
       dangerMode: true,
@@ -58,7 +58,7 @@ const Tarea = ({ tarea }) => {
     .then((eliminar) => {
       if (eliminar) {
         eliminarTarea(id, proyectoActual._id);
-        swal("Operación completada","La tarea ha sido eliminada","success");
+        swal("Operación completada",`La tarea ${tarea.nombre} ha sido eliminada`,"success");
         obtenerTareasPorProyecto(proyectoActual._id);
       } else {
         swal("Operación cancelada");
