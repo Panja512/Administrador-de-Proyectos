@@ -131,12 +131,12 @@ const onSubmitIniciarSesion = (e) => {
           </Button>
           <Grid container align="center">
             <Grid item xs={12} sm={6}>
-              <Link to={'/olvidecontraseña'} variant="body1">
+              <Link to={'/olvide-contraseña'} variant="body1">
                 ¿Olvidaste tu contraseña?
               </Link>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Link onClick={borrarMensajes} to={'/cuentanueva'} variant="body1">
+              <Link onClick={borrarMensajes} to={'/cuenta-nueva'} variant="body1">
                 {"¿No tienes una cuenta? Regístrate"}
               </Link>
             </Grid>
