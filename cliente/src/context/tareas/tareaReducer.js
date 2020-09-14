@@ -27,8 +27,6 @@ import {
         return {
           ...state,
           tareasxproyecto: [...state.tareasxproyecto, action.payload],
-          formulario_tarea: false,
-          lista_tareas: true,
         };
       case SELECCIONAR_TAREA_ACTUAL:
         return {

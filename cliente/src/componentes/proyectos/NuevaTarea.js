@@ -63,7 +63,6 @@ const NuevaTarea = () => {
       nombre: "",
       duracion: "",
     });
-    obtenerTareasPorProyecto(proyectoActual._id);
   };
 
   const onSubmitTareas = (e) => {
@@ -173,7 +172,7 @@ const NuevaTarea = () => {
                     <Button
                       fullWidth
                       variant="outlined"
-                      onClick={() => resetearFormTarea()}
+                      onClick={() => obtenerTareasPorProyecto(proyectoActual._id)}
                       className={estilos.boton}
                     >
                       <NavigateBeforeTwoToneIcon />
