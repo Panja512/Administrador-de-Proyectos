@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, useEffect, Fragment } from "react";
 import { EstilosComun } from "./../diseño/EstilosComun.js";
 import { Copyright } from "./../diseño/EstilosComun.js";
 import Container from "@material-ui/core/Container";
@@ -29,6 +29,10 @@ const ListaTareas = () => {
     mostrarFormularioTareas,
   } = tareasContext;
 
+  useEffect(()=>{
+    obtenerTareasPorProyecto();
+  },[]);
+
   if (!proyecto_seleccionado) {
     return <h2></h2>;
   }
@@ -56,8 +60,8 @@ const ListaTareas = () => {
                       <Typography variant="h6" align="center">
                         Tareas registradas
                       </Typography>
-                      {tareasxproyecto.map((tareasxproyecto) => (
-                        <Tarea tarea={tareasxproyecto} key={tareasxproyecto.id} />
+                      {tareasxproyecto.map((tarea) => (
+                        <Tarea tarea={tarea} key={tarea._id} />
                       ))}
                     </List>
                 </Zoom>

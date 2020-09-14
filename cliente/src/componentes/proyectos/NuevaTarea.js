@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import TimerIcon from "@material-ui/icons/Timer";
@@ -16,6 +15,8 @@ import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import TareaContext from "./../../context/tareas/tareaContext";
 import ProyectoContext from "./../../context/proyectos/proyectoContext";
 import swal from 'sweetalert';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
 const NuevaTarea = () => {
   const tareasContext = useContext(TareaContext);
   const proyectosContext = useContext(ProyectoContext);
@@ -25,8 +26,7 @@ const NuevaTarea = () => {
     tarea_seleccionada,
     obtenerTareasPorProyecto,
     registrarTarea,
-    modificarTarea,
-    mostrarErrorTareas,
+    modificarTarea
   } = tareasContext;
   /* use effect para detectar si hay una tarea seleccionada */
   useEffect(()=>{
@@ -36,19 +36,20 @@ const NuevaTarea = () => {
       });
     } else {
       guardarTarea({
-        nombreTarea: '',
-        duracionTarea: '',
+        nombre: '',
+        duracion: '',
       });
     }
   },[tarea_seleccionada]);
 
   /* state para controlar el contenido de los inputs */
   const [tarea, guardarTarea] = useState({
-    nombreTarea: "",
-    duracionTarea: "",
+    nombre: "",
+    duracion: "",
   });
+
   //extraemos los valores
-  const { nombreTarea, duracionTarea } = tarea;
+  const { nombre, duracion } = tarea;
   //leer valores formulario
   const actualizarState = (e) => {
     guardarTarea({
@@ -56,33 +57,27 @@ const NuevaTarea = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const resetearFormTarea = () => {
     guardarTarea({
-      nombreTarea: "",
-      duracionTarea: "",
+      nombre: "",
+      duracion: "",
     });
-    obtenerTareasPorProyecto(proyectoActual.id);
+    obtenerTareasPorProyecto(proyectoActual._id);
   };
+
   const onSubmitTareas = (e) => {
     e.preventDefault();
-    //validamos los formularios
-    if (nombreTarea.trim() === "" || duracionTarea.trim() === "") {
-      mostrarErrorTareas();
-      swal("Atención!","Debe completar todos los campos para continuar","warning");
-      return;
+    if (tarea_seleccionada){
+      swal("Operación completada","Tarea modificada correctamente","success");
     }
     else {
-      if (tarea_seleccionada){
-        swal("Operación completada","Tarea modificada correctamente","success");
-      }
-      else {
-        swal("Operación completada","Tarea agregada correctamente","success");
-      }
+      swal("Operación completada","Tarea agregada correctamente","success");
     }
     if (tarea_seleccionada === null) {
       //a la nueva tarea debemos agregarle el id del proyecto y el estado
-      tarea.proyectoId = proyectoActual.id;
-      tarea.estado = false;
+      //es tarea.proyecto debido a que en el backend definimos un atributo proyecto para tarea
+      tarea.proyecto = proyectoActual._id;
       registrarTarea(tarea);
     } else {
       modificarTarea(tarea);
@@ -92,13 +87,14 @@ const NuevaTarea = () => {
 
   const estilos = EstilosComun();
   const copyright = Copyright();
+
   if (!proyecto_seleccionado) {
     return <h2></h2>;
   }
   // HAY QUE ACCEDER AL ARREGLO DE LOS PROYECTOS Y APLICAR ARRAY DESTRUCTURING
   const [proyectoActual] = proyecto_seleccionado;
   return (
-    <Fragment>
+    <ValidatorForm onSubmit={onSubmitTareas}>
       {formulario_tarea ? (
         <Fragment>
           <Container component="main" maxwidth="sm" />
@@ -109,18 +105,20 @@ const NuevaTarea = () => {
                 :"Agregar tarea"}></CardHeader>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
-                    <TextField
+                    <TextValidator
                       autoFocus
                       variant="outlined"
                       fullWidth
+                      validators={['required']}
+                      errorMessages={['Ingrese el nombre de la tarea']}
                       margin="normal"
                       required
-                      id="nombreTarea"
+                      id="nombre"
                       label="Nombre de la tarea"
-                      name="nombreTarea"
-                      value={nombreTarea}
+                      name="nombre"
+                      value={nombre}
                       onChange={actualizarState}
-                      autoComplete="nombreTarea"
+                      autoComplete="nombre"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -131,18 +129,20 @@ const NuevaTarea = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
+                    <TextValidator
                       fullWidth
                       type="number"
                       variant="outlined"
                       margin="normal"
+                      validators={['required', 'isNumber']}
+                      errorMessages={['Ingrese la duración de la tarea','Sólo números!']}
                       required
-                      id="duracionTarea"
+                      id="duracion"
                       label="Duración aproximada de la tarea"
-                      name="duracionTarea"
-                      value={duracionTarea}
+                      name="duracion"
+                      value={duracion}
                       onChange={actualizarState}
-                      autoComplete="duracionTarea"
+                      autoComplete="duracion"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -162,7 +162,6 @@ const NuevaTarea = () => {
                       type="submit"
                       className={estilos.boton}
                       color="primary"
-                      onClick={onSubmitTareas}
                     >
                       {tarea_seleccionada ? <EditIcon />
                       : <PlaylistAddCheckIcon/>}
@@ -188,7 +187,7 @@ const NuevaTarea = () => {
           </Card>
         </Fragment>
       ) : null}
-    </Fragment>
+    </ValidatorForm>
   );
 };
 

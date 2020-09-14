@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
 import Proyecto from "./Proyecto.js";
 import AddCircleOutlineTwoToneIcon from "@material-ui/icons/AddCircleOutlineTwoTone";
 import ProyectoContext from "./../../context/proyectos/proyectoContext";

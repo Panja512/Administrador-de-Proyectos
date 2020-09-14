@@ -38,8 +38,9 @@ exports.obtenerTareasPorProyecto = async (req,res) => {
         return res.status(400).json({ errores: errores.array()});
     }
     try {
-    //Extraemos el proyecto y vemos si existe o no
-        const { proyecto } = req.body;
+    //Extraemos el proyecto y vemos si existe o no, utilizamos .query ya que desde Context de react estamos 
+    //enviando por cliente Axios el proyecto ya filtrado
+        const { proyecto } = req.query;
         // le pasamos como parámetro el proyecto que extrajimos
         const existeProyecto = await Proyecto.findById(proyecto);
 

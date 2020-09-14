@@ -31,10 +31,11 @@ const Tarea = ({ tarea }) => {
   }
   // HAY QUE ACCEDER AL ARREGLO DE LOS PROYECTOS Y APLICAR ARRAY DESTRUCTURING
   const [proyectoActual] = proyecto_seleccionado;
+
   const onCheckClick = () => {
     deshabilitarCheck(!deshabilitado);
     tarea.estado = true;
-    obtenerTareasPorProyecto(proyectoActual.id);
+    obtenerTareasPorProyecto(proyectoActual._id);
   };
   const seleccionarTareaModificar = (id) => {
     seleccionarTarea(id);
@@ -53,7 +54,7 @@ const Tarea = ({ tarea }) => {
       if (eliminar) {
         eliminarTarea(id);
         swal("Operación completada","La tarea ha sido eliminada","success");
-        obtenerTareasPorProyecto(proyectoActual.id);
+        obtenerTareasPorProyecto(proyectoActual._id);
       } else {
         swal("Operación cancelada");
       }
@@ -69,10 +70,10 @@ const Tarea = ({ tarea }) => {
           </Avatar>
         </ListItemAvatar>
         <ListItemText
-          primary={tarea.nombreTarea}
+          primary={tarea.nombre}
           secondary={
             <>
-              <Typography>Duración en horas: {tarea.duracionTarea}</Typography>
+              <Typography>Duración en horas: {tarea.duracion}</Typography>
             </>
           }
         />
@@ -95,7 +96,7 @@ const Tarea = ({ tarea }) => {
               <IconButton
               color="inherit"
               edge="end"
-              onClick={() => seleccionarTareaModificar(tarea.id)}
+              onClick={() => seleccionarTareaModificar(tarea._id)}
               >
                 <EditTwoToneIcon />
               </IconButton>
@@ -105,7 +106,7 @@ const Tarea = ({ tarea }) => {
                 color="secondary"
                 edge="end"
                 aria-label="delete"
-                onClick={() => eliminarTareaActualizarLista(tarea.id)}
+                onClick={() => eliminarTareaActualizarLista(tarea._id)}
               >
                 <DeleteIcon />
               </IconButton>
