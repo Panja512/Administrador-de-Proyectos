@@ -103,7 +103,7 @@ exports.modificarTarea = async (req,res) => {
 };
 exports.eliminarTarea = async(req,res) => {
     //array destructuring para sacar información de la tarea
-    const { proyecto } = req.body;
+    const { proyecto } = req.query;
     try {
         //revisamos el ID de la tarea
         let tarea = await Tarea.findById(req.params.id);

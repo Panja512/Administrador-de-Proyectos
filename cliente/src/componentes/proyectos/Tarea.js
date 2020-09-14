@@ -52,7 +52,7 @@ const Tarea = ({ tarea }) => {
     })
     .then((eliminar) => {
       if (eliminar) {
-        eliminarTarea(id);
+        eliminarTarea(id, proyectoActual._id);
         swal("Operación completada","La tarea ha sido eliminada","success");
         obtenerTareasPorProyecto(proyectoActual._id);
       } else {

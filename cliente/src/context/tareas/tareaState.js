@@ -69,7 +69,8 @@ const TareaState = (props) => {
       payload: tarea
     });
   };
-  const eliminarTarea = (id) => {
+  const eliminarTarea = async (id, proyecto) => {
+    await clienteAxios.delete(`/api/tareas/${id}`, { params: {proyecto}});
     dispatch({
       type: ELIMINAR_TAREA,
       payload: id,

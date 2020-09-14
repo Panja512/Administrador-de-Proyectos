@@ -48,7 +48,7 @@ import {
           ...state,
           /*     A PARTIR DE ESTE FILTRO SOLAMENTE NOS MOSTRARÁ TODAS LAS TAREAS MENOS
               LA QUE SELECCIONEMOS Y QUE COINCIDA CON EL ID */
-          tareasxproyecto: state.tareasxproyecto.filter((tarea) => tarea.id !== action.payload),
+          tareasxproyecto: state.tareasxproyecto.filter((tarea) => tarea._id !== action.payload),
         };
       default:
         return state;
