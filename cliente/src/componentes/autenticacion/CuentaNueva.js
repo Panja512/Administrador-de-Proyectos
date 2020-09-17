@@ -235,7 +235,7 @@ const onSubmitUsuario = (e) => {
           </Button>
               </Grid>
               <Grid item xs={6}>
-              <Link onClick={borrarMensajes} to={'/login'}>
+              <Link onClick={borrarMensajes} to={'/'}>
               <Button
             fullWidth
             type="submit"
