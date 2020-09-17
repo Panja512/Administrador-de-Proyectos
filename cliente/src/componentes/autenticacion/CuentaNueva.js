@@ -42,7 +42,7 @@ const [usuario, guardarUsuario] = useState({
 useEffect(()=>{
   if(registrado){
     swal("Operación completada","Usuario registrado correctamente, ahora puede iniciar sesión.","success");
-    props.history.push('/login');
+    props.history.push('');
   }
 },[registrado,props.history]);
 
