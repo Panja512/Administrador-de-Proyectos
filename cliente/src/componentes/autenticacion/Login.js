@@ -135,7 +135,7 @@ const onSubmitIniciarSesion = (e) => {
                 ¿Olvidaste tu contraseña?
               </Link>
             </Grid> */}
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <Link onClick={borrarMensajes} to={'/cuenta-nueva'} variant="body1">
                 {"¿No tienes una cuenta? Regístrate"}
               </Link>
