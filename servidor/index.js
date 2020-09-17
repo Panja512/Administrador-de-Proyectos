@@ -10,7 +10,9 @@ conectarBaseDeDatos();
 //habilitamos cors
 app.use(cors());
 //para leer datos que ingrese el usuario
+app.use(cors({origin:true,credentials: true}));
 app.use(express.json({ extended: true}));
+
 
 //puerto de APP
 const port = process.env.port || 4000;
