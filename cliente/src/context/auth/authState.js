@@ -28,7 +28,6 @@ en index.js del lado del servidor, pusimos la ruta /api/usuarios, entonces debem
 datos del registro del usuario
 */
         const respuesta = await clienteAxios.post('/api/usuarios', datos);
-        console.log(respuesta);
         dispatch({
             type:REGISTRO_EXITOSO,
             payload: respuesta.data
@@ -52,7 +51,6 @@ datos del registro del usuario
         try {
             //obtenemos la respuesta de la peticion a la base de datos, para obtener info del usuario
             const respuesta = await clienteAxios.get('/api/auth');
-            console.log(respuesta);
             dispatch({
                 type: OBTENER_INFO_USUARIO,
                 payload: respuesta.data.usuario
@@ -68,7 +66,6 @@ datos del registro del usuario
     const iniciarSesion = async(datos) =>{
         try {
             const respuesta = await clienteAxios.post('/api/auth', datos);
-            console.log(respuesta);
             dispatch({
                 type:LOGIN_EXITOSO,
                 payload: respuesta.data
