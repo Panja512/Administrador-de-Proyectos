@@ -1,21 +1,18 @@
 const express = require('express');
 const conectarBaseDeDatos = require ('./config/db.js');
-const cors = require('cors');
 //creamos el servidor
 const app = express();
 
+
+
 //conectamos a la bd
 conectarBaseDeDatos();
-
-//habilitamos cors
-app.use(cors());
 //para leer datos que ingrese el usuario
-app.use(cors({origin:true,credentials: true}));
 app.use(express.json({ extended: true}));
 
 
 //puerto de APP
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 
 // Importamos rutas
 app.use('/api/usuarios', require('./routes/usuarios.js'));
